@@ -1,4 +1,4 @@
-module.exports = function(app) {
+var Routes = function(app) {
 
   app.get("/api/saved", function(req, res) {
     //Query MongoDB for all saved articles
@@ -58,9 +58,11 @@ module.exports = function(app) {
       });
       res.send("Article Save Complete");
   }); 
-
+// Main "/" Route. This will redirect the user to our rendered React application
   app.get("*", function(req, res) {
     //Load your single HTML page in public/index
-
+    res.sendFile(__dirname + "/public/index.html");
   }); 
 }
+
+module.exports = Routes;

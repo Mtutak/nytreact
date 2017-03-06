@@ -3,13 +3,37 @@ var React = require("react");
 // Here we include all of the sub-components
 var Search = require("./children/Search");
 var Saved = require("./children/Saved");
+var Result = require("./children/Result");
 //Helper Function
-var helpers = require("./utils/helper");
+var helper = require("./utils/helper");
 //A Main React Component
 // contains the main-container div that holds the main layout and navigation. 
 //This component should also be able to hold sub-components Search and Saved
 var Main = React.createClass({
-  // Component's render method
+    // Here we set a generic state associated with the number of clicks
+  getInitialState: function() {
+    return {  searchTerm: "",
+              beginDate: "",
+              endDate:"",
+              results: ""
+          };
+  },
+  componentDidUpdate: function () {
+    //Run the NYT query for the values input on form
+    helper.getArticles(this.state.searchTerm, this.state.beginDate, this.state.endDate).then(function(data){
+      console.log(data);
+      this.setState({results: data});
+      //after receive data from query post the data to our DB
+      // helper.postArticle
+    }.bind(this));
+  },
+   setTerm: function(term, start, end) {
+    this.setState({
+      searchTerm: term,
+      beginDate: start,
+      endDate: end
+    });
+  },
   render: function() {
     return (
       <div className="container">
@@ -32,13 +56,18 @@ var Main = React.createClass({
           <div className="container">
             {/* Includes the sub-component of Search and Saved from associated component folder */ }
             <div className="col-sm-12">
-                <Search />
+            {/* Includes the props setTerm which is a method of the Main component */ }
+                <Search setTerm={this.setTerm}/>
             </div>
             <div className="col-sm-12">
-              <Saved />
+                <Result articles={this.state.results} />
+            </div>
+            <div className="col-sm-12">
+                <Saved />
             </div>
             {/* Added this.props.children to dump all of the child components into place 
-            {this.props.children} */}
+            {this.props.children} see the contents of the Main.js children
+            nesting of result, saved, search*/}
 
           </div>
         </div>

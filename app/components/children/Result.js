@@ -20,6 +20,7 @@ render: function () {
                     <div className="row">
                         <div className="col-sm-6">
                             <h4>Article Title</h4>
+                            <p>{this.props.articles}</p>
                         </div>
                         <div className="col-sm-6">
                             <button>Save</button>
