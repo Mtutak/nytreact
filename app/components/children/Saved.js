@@ -13,20 +13,25 @@ var Saved = React.createClass({
                     <h3 id="savedHeader" className="panel-title text-center">Saved Articles</h3>
                 </div>
                 <div className="savedArticle panel-body">
-                    <div className="row">
+                    {this.props.saveArt.map(function(res, i) {
+                        return (
+                    <div className="row eachArtDb">
                         <div className="col-sm-4">
-                            <h4>Article Title</h4>
+                            <h4>{res.title} : {res.url}</h4>
                         </div>
                         <div className="col-sm-4">
-                            <h5>Date Saved: </h5>
+                            <h5>{res.date} </h5>
                         </div>
                         <div className="col-sm-4">
-                            <button>Remove</button>
+                            <button id={res._id} >Remove</button>
                         </div>
                     </div>
+                        );
+                    })}
+                 
                     <div className="row">
                         <div className="col-sm-12">
-                            <h5>Information On Article</h5>
+                            <h5>These Are The Top Results From Our DB!</h5>
                         </div>
                     </div>
                 </div>

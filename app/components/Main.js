@@ -69,7 +69,7 @@ var Main = React.createClass({
                 <Result articles={this.state.results} />
             </div>
             <div className="col-sm-12">
-                <Saved />
+                <Saved saveArt={this.state.saved}/>
             </div>
             {/* Added this.props.children to dump all of the child components into place 
             {this.props.children} see the contents of the Main.js children
