@@ -15,16 +15,28 @@ var Main = React.createClass({
     return {  searchTerm: "",
               beginDate: "",
               endDate:"",
-              results: ""
+              results: [],
+              saved: []
           };
   },
   componentDidUpdate: function () {
-    //Run the NYT query for the values input on form
+    console.log("Did Update!");
+    //Run the NYT query for the values input on form through axios helper
     helper.getArticles(this.state.searchTerm, this.state.beginDate, this.state.endDate).then(function(data){
-      console.log(data);
+      console.log("API Request Result", data);
       this.setState({results: data});
       //after receive data from query post the data to our DB
-      // helper.postArticle
+      helper.postArticle(this.state.results).then(function() { 
+        console.log("Updated Search Results in DB!");
+          // finish post then show saved article history
+           helper.getSaved().then(function(response) {
+            //Saved Articles Retrieved
+            console.log("Saved", response.data);
+
+            this.setState({ saved: response.data });
+
+          }.bind(this));
+      }.bind(this));
     }.bind(this));
   },
    setTerm: function(term, start, end) {
@@ -45,12 +57,6 @@ var Main = React.createClass({
             <p><em>Search for and annotate articles of interest!</em></p>
             <a href="#/info"><button className="btn btn-default">Info</button></a>
             <a href="#/chat"><button className="btn btn-default">Comments</button></a>
-          </div>
-
-          <div className="row">
-            <div className="text-center">
-                <h2>Some Other Info</h2>
-            </div>
           </div>
 
           <div className="container">
